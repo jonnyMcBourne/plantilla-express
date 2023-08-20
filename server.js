@@ -1,9 +1,8 @@
 const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-
+const cors = require('cors'); // Cross-origin resource sharing library
+const morgan = require('morgan'); // library for loggin
 //config
-require('dotenv').config();
+require('dotenv').config(); // enable .env
 
 class Server{
     constructor(){
@@ -11,7 +10,8 @@ class Server{
         this.port  = process.env.PORT||3000; 
         
         this.runCors();
-        this.middlewares();   
+        this.middlewares();  
+        this.routes();
     }
     runCors(){
         this.app.use(cors());
@@ -22,7 +22,10 @@ class Server{
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:false}));
     }
-    routes(){
+    routes() {
+        this.app.get('/', (req, res) => { res.json({ message: 'ok' }) });
+
+        this.app.get('/example', require('./routes/example-routes'));
         //this.app.use(this.auth,require('../path'));
     }
 
